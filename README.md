@@ -18,4 +18,4 @@ Bei dem Projekt waren alle gleichermaßen an allen Features beteiligt, da wir im
 - Steuerung des Motorrads über A, D und Space (Bewegen nach links, rechts und springen (vektorielle Transformation --> glatte Übergänge (findet sich auch bei der Kameraführung)))
 - Geschwindigkeitserhöhung des Levels über Zeit, dadurch erhöht sich die Schwierigkeit
 - Sowohl statische, als auch bewegende Objekte (mit Hitbox)
-- Nue Texturen und Objekte (erstellt in Blender)
+- Neue Texturen und Objekte (erstellt in Blender)
