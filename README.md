@@ -15,12 +15,14 @@ Listen Sie hier noch einmal alle Teammitglieder auf.
 - Christian Tschitschke
 
 # Featureliste
-Listen Sie hier alle relevanten Features als Liste mit sinnvoller Reihenfolge auf mit Angabe wer das Feature implementiert hat.
-Bei starker Ungleicheit der Features behalten wir uns eine individuelle Notenvergabe vor.
+Bei dem Projekt waren alle gleichermaßen an allen Features beteiligt, da wir immer zusammen über CodeWithMe gearbeitet haben.
 
-Bspw.
-
-- Verschiedene Kameramodelle (Wechsel zwischen orthographischer und perspektivischer Kamera mittels "c") (Berta)
-- Dynamische Kamera (Steuerung mittels Maus und "WASD" auf der Tastatur) (Carola und Armin)
-- Verschiedene Shaderprogramme (Wechsel mittels "s") (Carola)
-- ...
+- Zufällige, endlose Levelgenerierung
+- Kollisionserkennung (Collectable, welches die Geschwindigkeit des Levels verlangsamt, Kollision mit Hindernissen hält das Level an)
+- Respawn durch das drücken von R
+- Normal Mapping
+- Kamerabewegung durch das Drücken der Pfeiltasten ("First Person")
+- Steuerung des Motorrads über A, D und Space (bewegen nach links und rechts und springen (vektorielle Transformation --> glatte übergänge))
+- Geschwindigkeitserhöhung des Levels über Zeit
+- Objekte bewegen sich (mit Hintbox)
+- neue Texturen und Objekte (erstellt in Blender)
