@@ -9,7 +9,7 @@ class FloorMovement {
     {
         if (floor.getPosition().z >= 8f)
         {
-            floor.translateGlobal(Vector3f(0f,0f,-16*5.5f))
+            floor.translateGlobal(Vector3f(0f,0f,-20*11f))
         }
     }
 }

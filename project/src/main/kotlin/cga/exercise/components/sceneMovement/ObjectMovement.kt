@@ -31,10 +31,11 @@ class ObjectMovement {
     }
 
     fun respawnObject(obstacle : Renderable):Boolean {
-        val spawnRandom = (1..300).random()
+        val spawnRandom = (1..500).random()
         if(spawnRandom == 10) {
             if (!isObstacleOnCam(obstacle)) {
                 val offsetList = listOf(0, -20, -40, -60).shuffled()
+
                 obstacle.translateGlobal(Vector3f(0f, 0f, -16 * 5.5f - obstacle.getPosition().z + offsetList[0]))
                 return true
             }

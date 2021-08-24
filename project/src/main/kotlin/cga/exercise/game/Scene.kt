@@ -19,7 +19,6 @@ import org.lwjgl.opengl.GL11.*
 import org.lwjgl.opengl.GL14
 import cga.exercise.components.sceneMovement.FloorMovement
 import cga.exercise.components.sceneMovement.ObjectMovement
-import org.lwjgl.opengl.ARBFramebufferSRGB.GL_FRAMEBUFFER_SRGB
 
 /**
  * Created by Fabian on 16.09.2017.
@@ -28,7 +27,7 @@ class Scene(private val window: GameWindow) {
     private val staticShader: ShaderProgram = ShaderProgram("assets/shaders/tron_vert.glsl", "assets/shaders/tron_frag.glsl")
 
     private val floorChecker = FloorMovement()
-    private var colision = false
+    private var collision = false
     var gametime = 0
 
     var cameratimer = 100
@@ -72,11 +71,21 @@ class Scene(private val window: GameWindow) {
     private val coursePart8 = Renderable()
     private val coursePart9 = Renderable()
     private val coursePart10 = Renderable()
+    private val coursePart11 = Renderable()
+    private val coursePart12 = Renderable()
+    private val coursePart13 = Renderable()
+    private val coursePart14 = Renderable()
+    private val coursePart15 = Renderable()
+    private val coursePart16 = Renderable()
+    private val coursePart17 = Renderable()
+    private val coursePart18 = Renderable()
+    private val coursePart19 = Renderable()
+    private val coursePart20 = Renderable()
 
     private val dekolamp1 = Renderable()
     private val dekolamp2 = Renderable()
 
-    private val collisionBox = Collision()
+    private val collisionChecker = Collision()
     private val powerup = Renderable()
 
     private val tronCamera = TronCamera()
@@ -107,14 +116,11 @@ class Scene(private val window: GameWindow) {
     private val laser2 = Renderable()
     private val movableLaser = Renderable()
 
-    private var texSpec : Texture2D
     private var texEmit : Texture2D
-    private var texDiff : Texture2D
 
     private var texSpecNew : Texture2D
     private var texEmitNew : Texture2D
     private var texDiffNew : Texture2D
-
 
     private var texNormalMapNew : Texture2D
     private var texEmptyNormalMap : Texture2D
@@ -133,7 +139,7 @@ class Scene(private val window: GameWindow) {
     private var colorization = Vector3f()
 
     private var lineNumber = 1
-    private var timer = 0
+    private var movementTimer = 0
 
     //scene setup
     init {
@@ -152,12 +158,8 @@ class Scene(private val window: GameWindow) {
         val attrNorm = VertexAttribute(3, GL_FLOAT, stride, 5 * 4)
         val vertexAttributesObjects = arrayOf(attrPos, attrTC, attrNorm)
 
-        texDiff = Texture2D.invoke("assets/textures/ground_diff.png", true)
-        texDiff.setTexParams(GL14.GL_REPEAT, GL14.GL_REPEAT, GL14.GL_LINEAR_MIPMAP_LINEAR, GL14.GL_LINEAR)
         texEmit = Texture2D.invoke("assets/textures/ground_emit.png", true)
         texEmit.setTexParams(GL14.GL_REPEAT, GL14.GL_REPEAT, GL14.GL_LINEAR_MIPMAP_LINEAR, GL14.GL_LINEAR)
-        texSpec = Texture2D.invoke("assets/textures/ground_spec4.png", true)
-        texSpec.setTexParams(GL14.GL_REPEAT, GL14.GL_REPEAT, GL14.GL_LINEAR_MIPMAP_LINEAR, GL14.GL_LINEAR)
 
         texDiffNew = Texture2D.invoke("assets/textures/ground_diff_new.png", true)
         texDiffNew.setTexParams(GL14.GL_REPEAT, GL14.GL_REPEAT, GL14.GL_LINEAR_MIPMAP_LINEAR, GL14.GL_LINEAR)
@@ -178,7 +180,6 @@ class Scene(private val window: GameWindow) {
         texEmitLaser.setTexParams(GL14.GL_REPEAT, GL14.GL_REPEAT, GL14.GL_LINEAR_MIPMAP_LINEAR, GL14.GL_LINEAR)
 
         //COURSE PARTS
-        val matCourse = Material(texDiff, texEmit, texSpec, texNormalMapNew, 10.0f, Vector2f(32.0f, 32.0f))
         val matCourseNew = Material(texDiffNew, texEmit, texSpecNew, texNormalMapNew, 0.0f, Vector2f(16.0f, 16.0f))
 
         val dekolampObj = OBJLoader.loadOBJ("assets/models/deko/lamp.obj").objects[0].meshes[0]
@@ -208,6 +209,26 @@ class Scene(private val window: GameWindow) {
         coursePart9.translateGlobal(Vector3f(0f,0f,-16*5.5f))
         coursePart10.meshes.add(Mesh(courseObj.vertexData, courseObj.indexData, vertexAttributesObjects, matCourseNew))
         coursePart10.translateGlobal(Vector3f(0f,0f,-18*5.5f))
+        coursePart11.meshes.add(Mesh(courseObj.vertexData, courseObj.indexData, vertexAttributesObjects, matCourseNew))
+        coursePart11.translateGlobal(Vector3f(0f,0f,-20*5.5f))
+        coursePart12.meshes.add(Mesh(courseObj.vertexData, courseObj.indexData, vertexAttributesObjects, matCourseNew))
+        coursePart12.translateGlobal(Vector3f(0f,0f,-22*5.5f))
+        coursePart13.meshes.add(Mesh(courseObj.vertexData, courseObj.indexData, vertexAttributesObjects, matCourseNew))
+        coursePart13.translateGlobal(Vector3f(0f,0f,-24*5.5f))
+        coursePart14.meshes.add(Mesh(courseObj.vertexData, courseObj.indexData, vertexAttributesObjects, matCourseNew))
+        coursePart14.translateGlobal(Vector3f(0f,0f,-26*5.5f))
+        coursePart15.meshes.add(Mesh(courseObj.vertexData, courseObj.indexData, vertexAttributesObjects, matCourseNew))
+        coursePart15.translateGlobal(Vector3f(0f,0f,-28*5.5f))
+        coursePart16.meshes.add(Mesh(courseObj.vertexData, courseObj.indexData, vertexAttributesObjects, matCourseNew))
+        coursePart16.translateGlobal(Vector3f(0f,0f,-30*5.5f))
+        coursePart17.meshes.add(Mesh(courseObj.vertexData, courseObj.indexData, vertexAttributesObjects, matCourseNew))
+        coursePart17.translateGlobal(Vector3f(0f,0f,-32*5.5f))
+        coursePart18.meshes.add(Mesh(courseObj.vertexData, courseObj.indexData, vertexAttributesObjects, matCourseNew))
+        coursePart18.translateGlobal(Vector3f(0f,0f,-34*5.5f))
+        coursePart19.meshes.add(Mesh(courseObj.vertexData, courseObj.indexData, vertexAttributesObjects, matCourseNew))
+        coursePart19.translateGlobal(Vector3f(0f,0f,-36*5.5f))
+        coursePart20.meshes.add(Mesh(courseObj.vertexData, courseObj.indexData, vertexAttributesObjects, matCourseNew))
+        coursePart20.translateGlobal(Vector3f(0f,0f,-38*5.5f))
 
         listOfFixObjects.add(coursePart1)
         listOfFixObjects.add(coursePart2)
@@ -219,10 +240,20 @@ class Scene(private val window: GameWindow) {
         listOfFixObjects.add(coursePart8)
         listOfFixObjects.add(coursePart9)
         listOfFixObjects.add(coursePart10)
+        listOfFixObjects.add(coursePart11)
+        listOfFixObjects.add(coursePart12)
+        listOfFixObjects.add(coursePart13)
+        listOfFixObjects.add(coursePart14)
+        listOfFixObjects.add(coursePart15)
+        listOfFixObjects.add(coursePart16)
+        listOfFixObjects.add(coursePart17)
+        listOfFixObjects.add(coursePart18)
+        listOfFixObjects.add(coursePart19)
+        listOfFixObjects.add(coursePart20)
         //
 
         //BOXEN
-        val matBox = Material(texDiff, texEmit, texSpecNew, texObstacleNormalMap, 60.0f, Vector2f(16f, 16f))
+        val matBox = Material(texDiffNew, texEmit, texSpecNew, texObstacleNormalMap, 60.0f, Vector2f(16f, 16f))
         val matLaser = Material(texEmitLaser, texEmitLaser, texEmitLaser, texEmptyNormalMap, 10000f, Vector2f(1f,1f))
         val objBox =  OBJLoader.loadOBJ("assets/models/Obstacle/box_12.obj").objects[0].meshes[0]
         val objBox2 =  OBJLoader.loadOBJ("assets/models/Obstacle/tall_box_fence.obj").objects[0].meshes[0]
@@ -295,8 +326,8 @@ class Scene(private val window: GameWindow) {
          */
         listOfObstacles.add(movableLaser)
 
-        bikeColBox?.parent = motorrad
-        bikeColBox?.translateLocal(Vector3f(0.5f,0.25f,-1.5f))
+        bikeColBox.parent = motorrad
+        bikeColBox.translateLocal(Vector3f(0.5f,0.25f,-1.5f))
 
         pointLight = PointLight(Vector3f(0.0f, 1f, 0.0f), Vector3f(2.0f, 0.0f, 1.0f), Vector3f(1.0f, 0.5f, 0.1f))
         pointLight.parent = motorrad
@@ -331,8 +362,8 @@ class Scene(private val window: GameWindow) {
         dekolamp2.render(staticShader)
         colorization = Vector3f(7f, 2f, 2f)
         staticShader.setUniform("colorization", colorization.x, colorization.y, colorization.z)
-        //obstaclePartController.respawnObstaclePart()
         obstacles.renderListOfObjects(staticShader)
+
         colorization = Vector3f(7f, 0f, 0f)
         staticShader.setUniform("colorization", colorization.x, colorization.y, colorization.z)
         obstaclesLasers.renderListOfObjects(staticShader)
@@ -351,6 +382,7 @@ class Scene(private val window: GameWindow) {
     fun update(dt: Float, t: Float) {
 
         powerup.translateLocal(Vector3f(0f,0f+ Math.sin(t)/700,0f))
+
         if(cameratimer>50) {
             if (window.getKeyState(GLFW.GLFW_KEY_UP)) {
                 cameraFront = true
@@ -411,7 +443,7 @@ class Scene(private val window: GameWindow) {
 
         cameratimer++
 
-        if (colision && window.getKeyState(GLFW.GLFW_KEY_R))
+        if (collision && window.getKeyState(GLFW.GLFW_KEY_R))
         {
             box1.translateGlobal(Vector3f(0f,0f,-16 * 5.5f- (1..150).random()))
             tallBox1.translateGlobal(Vector3f(0f,0f,-16 * 5.5f -(1..150).random()))
@@ -426,13 +458,14 @@ class Scene(private val window: GameWindow) {
             box6.translateGlobal(Vector3f(0f,0f,-16 * 5.5f - (1..150).random()))
             tallBox3.translateGlobal(Vector3f(0f,0f,-16 * 5.5f - (1..150).random()))
             powerup.translateGlobal(Vector3f(0f,0f,-16 * 5.5f - (1..150).random()))
-            colision = false
+            collision = false
             speedMultiplier = 10.0
             gametime = 0
         }
-        if (window.getKeyState(GLFW.GLFW_KEY_A)&&lineNumber!=0&&timer>50) {
+
+        if (window.getKeyState(GLFW.GLFW_KEY_A)&&lineNumber!=0&&movementTimer>50) {
             lineNumber--
-            timer = 0
+            movementTimer = 0
 
             if (!right)
             {
@@ -441,9 +474,9 @@ class Scene(private val window: GameWindow) {
             }
         }
 
-        if (window.getKeyState(GLFW.GLFW_KEY_D)&&lineNumber!=2&&timer>50) {
+        if (window.getKeyState(GLFW.GLFW_KEY_D)&&lineNumber!=2&&movementTimer>50) {
             lineNumber++
-            timer = 0
+            movementTimer = 0
             if (!left)
             {
                 right=true
@@ -460,7 +493,7 @@ class Scene(private val window: GameWindow) {
             motorrad?.translateLocal(Vector3f(rightvector,0f,0f))
             rightvector -= 0.01f
 
-            if (timer==40)
+            if (movementTimer==40)
             {
                 right = false
             }
@@ -471,7 +504,7 @@ class Scene(private val window: GameWindow) {
             motorrad?.translateLocal(Vector3f(-leftvector,0f,0f))
             leftvector -= 0.01f
 
-            if (timer==40)
+            if (movementTimer==40)
             {
                 left = false
             }
@@ -495,9 +528,9 @@ class Scene(private val window: GameWindow) {
             }
         }
 
-        when(gametime/100){
+        when((gametime/100).toFloat()){
             in 10f..19f->{
-                if (!colision) {
+                if (!collision) {
                     if (speedMultiplier<20)
                     {
                         speedMultiplier+= 0.1
@@ -506,7 +539,7 @@ class Scene(private val window: GameWindow) {
                 }
             }
             in 25f..34f->{
-                if (!colision) {
+                if (!collision) {
                     if (speedMultiplier<25)
                     {
                         speedMultiplier+= 0.1
@@ -515,7 +548,7 @@ class Scene(private val window: GameWindow) {
                 }
             }
             in 35f..49f->{
-                if (!colision) {
+                if (!collision) {
                     if (speedMultiplier<30)
                     {
                         speedMultiplier+= 0.1
@@ -524,7 +557,7 @@ class Scene(private val window: GameWindow) {
                 }
             }
             in 50f..59f->{
-                if (!colision) {
+                if (!collision) {
                     if (speedMultiplier<40)
                     {
                         speedMultiplier+= 0.1
@@ -548,18 +581,12 @@ class Scene(private val window: GameWindow) {
                 if (obstacleChecker.respawnObject(laser)||obstacleChecker.respawnObject(laser2)) {
                     laserCooldown = 300
                 }
-
-
             }
         }
         laserCooldown -= 1
 
         powerup.translateGlobal(Vector3f(0f,0f,(speedMultiplier * 0.01).toFloat()))
-/*
-        tallBox1in.translateGlobal(Vector3f(0f,0f,(speedMultiplier * 0.01).toFloat()))
-        tallBox2in.translateGlobal(Vector3f(0f,0f,(speedMultiplier * 0.01).toFloat()))
-        tallBox3in.translateGlobal(Vector3f(0f,0f,(speedMultiplier * 0.01).toFloat()))
- */
+
         obstacleChecker.respawnPowerUp(powerup)
 
         if(laserRight)
@@ -577,14 +604,14 @@ class Scene(private val window: GameWindow) {
             }
         }
         //collision check
-        if(collisionBox.checkCollision(bikeColBox, boxList, tallBoxList, laserList, movableLaser))
+        if(collisionChecker.checkCollision(bikeColBox, boxList, tallBoxList, laserList, movableLaser))
         {
-            colision = true
+            collision = true
             speedMultiplier = 0.0
         }
 
         //Power UP
-        if(collisionBox.checkCollisionBikePowerUp(bikeColBox,powerup)&&powerUPidleTime<0)
+        if(collisionChecker.checkCollisionBikePowerUp(bikeColBox,powerup)&&powerUPidleTime<0)
         {
             powerupTimer = 1000
             powerUPidleTime = 400
@@ -602,7 +629,7 @@ class Scene(private val window: GameWindow) {
             powerupTimer--
         }
         powerUPidleTime--
-        timer++
+        movementTimer++
     }
 
     fun onKey(key: Int, scancode: Int, action: Int, mode: Int) {}
